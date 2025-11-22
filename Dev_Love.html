@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Good Morning - Manpreet News Network 📰💛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg-top: #0b1020;
+      --bg-bottom: #161a2b;
+      --accent-primary: #ff2f5f;
+      --accent-secondary: #ffc857;
+      --accent-soft: #4cc9f0;
+      --card-bg: #1f2436;
+      --card-bg-soft: #242a3e;
+      --text-main: #f9fafb;
+      --text-soft: #c2c6d9;
+      --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.55);
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: radial-gradient(circle at top, #1b2340, #050814 65%);
+      color: var(--text-main);
+    }
+
+    .news-app {
+      max-width: 960px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(22, 27, 51, 0.98), rgba(10, 12, 25, 0.98));
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .news-app::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 47, 95, 0.25), transparent 70%);
+      top: -140px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .news-app::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76, 201, 240, 0.18), transparent 70%);
+      bottom: -120px;
+      left: -80px;
+      pointer-events: none;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, var(--accent-primary), #ff7a93);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 20px rgba(255, 47, 95, 0.6);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-text-main {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .logo-text-sub {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+    }
+
+    .gm-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-soft);
+    }
+
+    .gm-chip span.icon {
+      font-size: 1rem;
+    }
+
+    .gm-chip strong {
+      color: var(--accent-secondary);
+    }
+
+    /* Breaking news ticker */
+
+    .ticker {
+      position: relative;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: linear-gradient(90deg, #9d0208, #d00000, #f48c06);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .ticker-label {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 10, 10, 0.85);
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ticker-label span.icon {
+      font-size: 0.9rem;
+    }
+
+    .ticker-track {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      animation: tickerMove 26s linear infinite;
+      padding-left: 120px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .ticker-item {
+      margin-right: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ticker-item span.tag {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    @keyframes tickerMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Layout for main content */
+
+    .content-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 800px) {
+      .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #2c3351, #171b2b);
+      border-radius: 16px;
+      padding: 10px 11px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 200, 87, 0.16), transparent 70%);
+      top: -70px;
+      right: -50px;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .card-title span.icon {
+      font-size: 1.1rem;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-soft);
+      background: rgba(4, 9, 27, 0.8);
+      white-space: nowrap;
+    }
+
+    .card-body {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    .card-body strong {
+      color: var(--accent-secondary);
+    }
+
+    .card + .card {
+      margin-top: 10px;
+    }
+
+    /* Anchor section */
+
+    .anchor-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .anchor-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at top, #ffb703, #fb8500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 10px 24px rgba(251, 133, 0, 0.6);
+    }
+
+    .anchor-text-main {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .anchor-text-sub {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+    }
+
+    .voice-btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff2f5f, #ff7a93);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 22px rgba(255, 47, 95, 0.5);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .voice-btn span.icon {
+      font-size: 1rem;
+    }
+
+    .voice-btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 6px 14px rgba(255, 47, 95, 0.5);
+      filter: brightness(0.98);
+    }
+
+    .voice-btn.voice-active {
+      background: linear-gradient(135deg, #4cc9f0, #4895ef);
+      box-shadow: 0 10px 22px rgba(76, 201, 240, 0.55);
+    }
+
+    .anchor-status {
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #16db65;
+      box-shadow: 0 0 10px rgba(22, 219, 101, 0.8);
+    }
+
+    /* Weather / milk / snore small layout */
+
+    .row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .mini-pill {
+      background: rgba(3, 7, 30, 0.8);
+      border-radius: 12px;
+      padding: 6px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.7rem;
+      line-height: 1.35;
+    }
+
+    .mini-pill-title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .mini-pill-title span.icon {
+      font-size: 0.9rem;
+    }
+
+    .mini-pill strong {
+      color: var(--accent-secondary);
+    }
+
+    /* Productivity chart */
+
+    .chart-wrap {
+      margin-top: 6px;
+      background: rgba(3, 7, 30, 0.8);
+      border-radius: 12px;
+      padding: 6px 7px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.7rem;
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .bar-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .bar {
+      width: 100%;
+      border-radius: 999px 999px 4px 4px;
+      background: linear-gradient(180deg, #4cc9f0, #4361ee);
+      box-shadow: 0 6px 14px rgba(67, 97, 238, 0.4);
+      transform-origin: bottom;
+      transform: scaleY(0.1);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bar-label {
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--text-soft);
+    }
+
+    .bar-value {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--accent-secondary);
+    }
+
+    /* Relationship / education / nephew */
+
+    .bullet-list {
+      margin-top: 4px;
+      padding-left: 12px;
+      list-style: none;
+      font-size: 0.78rem;
+    }
+
+    .bullet-list li {
+      position: relative;
+      margin-bottom: 3px;
+      padding-left: 10px;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent-soft);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(3, 7, 30, 0.85);
+      color: var(--accent-secondary);
+      margin-top: 4px;
+    }
+
+    /* Meme segment */
+
+    .meme-text {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .meme-btn {
+      margin-top: 5px;
+      border-radius: 999px;
+      border: none;
+      outline: none;
+      background: rgba(12, 164, 232, 0.16);
+      color: var(--accent-soft);
+      font-size: 0.72rem;
+      padding: 4px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: background 0.12s ease, transform 0.12s ease;
+    }
+
+    .meme-btn:active {
+      transform: translateY(1px);
+      background: rgba(12, 164, 232, 0.25);
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-note span {
+      color: var(--accent-secondary);
+      font-weight: 600;
+    }
+
+    /* Fade in animation */
+
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeUp 0.7s ease-out forwards;
+    }
+
+    .fade-in-up.delay-1 { animation-delay: 0.1s; }
+    .fade-in-up.delay-2 { animation-delay: 0.18s; }
+    .fade-in-up.delay-3 { animation-delay: 0.26s; }
+    .fade-in-up.delay-4 { animation-delay: 0.34s; }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .news-app {
+        padding: 12px 11px 14px;
+        border-radius: 18px;
+      }
+
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .gm-chip {
+        align-self: flex-start;
+      }
+
+      .ticker-track {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="news-app">
+    <!-- Top bar -->
+    <div class="top-row fade-in-up delay-1">
+      <div class="logo-block">
+        <div class="logo-box">MNN</div>
+        <div class="logo-text">
+          <div class="logo-text-main">Manpreet News Network</div>
+          <div class="logo-text-sub">24/7 coverage of one very important girl</div>
+        </div>
+      </div>
+      <div class="gm-chip">
+        <span class="icon">🌤️</span>
+        <span>Good morning, <strong>Manpreet</strong>. Today you are the headline.</span>
+      </div>
+    </div>
+
+    <!-- Breaking news ticker -->
+    <div class="ticker fade-in-up delay-2">
+      <div class="ticker-label">
+        <span class="icon">🔴</span>
+        <span>Breaking</span>
+      </div>
+      <div class="ticker-track">
+        <div class="ticker-item">
+          <span class="tag">EXCLUSIVE</span>
+          <span>Scientists confirm: Manpreet’s Sunday laziness officially more powerful than gravity.</span>
+        </div>
+        <div class="ticker-item">
+          <span class="tag">ALERT</span>
+          <span>Exam stress seen leaving the building after chai and one cute smile.</span>
+        </div>
+        <div class="ticker-item">
+          <span class="tag">LIVE</span>
+          <span>Gurveer spotted negotiating homework in exchange for biscuits.</span>
+        </div>
+        <div class="ticker-item">
+          <span class="tag">REPORT</span>
+          <span>Snoring volume set to “romantically concerning but still cute.”</span>
+        </div>
+        <div class="ticker-item">
+          <span class="tag">WEATHER</span>
+          <span>High chance of naps with scattered Instagram scrolling.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content grid -->
+    <div class="content-grid">
+      <!-- Left column: anchor, education, relationship, nephew -->
+      <div class="left-col">
+        <!-- Anchor & voice -->
+        <div class="card fade-in-up delay-2">
+          <div class="anchor-wrap">
+            <div class="anchor-avatar">🎙️</div>
+            <div style="flex:1;">
+              <div class="anchor-text-main">Anchor Desk · Good Morning Bulletin</div>
+              <div class="anchor-text-sub" id="anchorIntro">
+                Welcome to Manpreet News Network. We bring you today’s top stories about your mood, glow, and guaranteed cuteness.
+              </div>
+              <div style="margin-top:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <button class="voice-btn" id="voiceBtn">
+                  <span class="icon">🔊</span>
+                  <span>Play AI news voice</span>
+                </button>
+                <div class="anchor-status" id="voiceStatus">
+                  <span class="status-dot"></span>
+                  <span>Studio ready. Tap to hear your morning bulletin.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education report -->
+        <div class="card fade-in-up delay-3">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎓</span>
+              <span>Education Report: Exam Season</span>
+            </div>
+            <div class="card-tag">Status: Surviving</div>
+          </div>
+          <div class="card-body">
+            Latest reports confirm that <strong>Manpreet</strong> continues to fight bravely with notes, long answer sheets, and professors who like giving surprise tension.
+            <ul class="bullet-list">
+              <li>Productivity fluctuates between “I will top the exam” and “I will nap instead.”</li>
+              <li>Average handwritten pages per paper: <strong>30+</strong>. Hand also demands human rights.</li>
+              <li>Chance of last-minute miracle understanding: <strong>82%</strong>.</li>
+            </ul>
+            <div class="badge">
+              <span>📊</span>
+              <span>BBA topper potential: 9.5 / 10 (0.5 depends on sleep and chai)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Relationship prediction -->
+        <div class="card fade-in-up delay-4">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">💘</span>
+              <span>Relationship Prediction: Today’s Forecast</span>
+            </div>
+            <div class="card-tag">Confidential · For Manpreet Only</div>
+          </div>
+          <div class="card-body">
+            AI romantics at MNN have run the numbers:
+            <ul class="bullet-list">
+              <li>Flirty teasing expected with light “stop it” but smiling anyway.</li>
+              <li>Love score today: <strong>98%</strong>. Remaining 2% kept aside for drama and attitude.</li>
+              <li>Chances you’ll be missed extra today: <strong>High</strong>, especially while studying or drinking milk.</li>
+            </ul>
+            <div class="badge">
+              <span>💞</span>
+              <span>Official statement: you are permanently on someone’s mind.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nephew update -->
+        <div class="card fade-in-up delay-4">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">👶</span>
+              <span>Special Segment: Gurveer Update</span>
+            </div>
+            <div class="card-tag">Chaos Correspondent</div>
+          </div>
+          <div class="card-body">
+            Field reporters confirm that:
+            <ul class="bullet-list">
+              <li>Gurveer still believes his main job is to disturb you at the cutest possible timing.</li>
+              <li>Probability he will steal your phone while you watch reels: <strong>76%</strong>.</li>
+              <li>Chance he will accidentally sit on your notes and crumple them: <strong>64%</strong>.</li>
+            </ul>
+            <div class="badge">
+              <span>🍼</span>
+              <span>Official role: Tiny bodyguard + part-time troublemaker.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: weather/milk/snore/productivity/meme -->
+      <div class="right-col">
+        <!-- Weather + Milk + Snore -->
+        <div class="card fade-in-up delay-3">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🌦️</span>
+              <span>Weather, Milk & Snoring Forecast</span>
+            </div>
+            <div class="card-tag">24-hr Outlook</div>
+          </div>
+          <div class="card-body">
+            <div class="row-3">
+              <div class="mini-pill">
+                <div class="mini-pill-title">
+                  <span class="icon">🌤️</span>
+                  <span>Weather</span>
+                </div>
+                Mood temperature: <strong>27°C</strong>  
+                Vibe: Partly sleepy with 100% chance of looking cute.  
+                Nap alert: High after lunch.
+              </div>
+              <div class="mini-pill">
+                <div class="mini-pill-title">
+                  <span class="icon">🥛</span>
+                  <span>Milk Meter</span>
+                </div>
+                Daily requirement: <strong>1–2 glasses</strong>  
+                Side effect: extra glow and extra teasing.  
+                If skipped: drama level increases by 37%.
+              </div>
+              <div class="mini-pill">
+                <div class="mini-pill-title">
+                  <span class="icon">😴</span>
+                  <span>SnoreCast</span>
+                </div>
+                Volume level: <strong>Sweet but dangerous</strong>  
+                Research says: still adorable.  
+                Future husband has been warned but accepts the risk.
+              </div>
+            </div>
+
+            <!-- Productivity chart -->
+            <div class="chart-wrap" id="chartWrap">
+              <div><strong>Productivity Dashboard · Today</strong></div>
+              <div>Distribution of your precious energy, according to our very serious research:</div>
+              <div class="chart-bars">
+                <div class="bar-item">
+                  <div class="bar" data-height="0.9"></div>
+                  <div class="bar-value">90%</div>
+                  <div class="bar-label">Thinking about life</div>
+                </div>
+                <div class="bar-item">
+                  <div class="bar" data-height="0.65"></div>
+                  <div class="bar-value">65%</div>
+                  <div class="bar-label">Studying</div>
+                </div>
+                <div class="bar-item">
+                  <div class="bar" data-height="0.8"></div>
+                  <div class="bar-value">80%</div>
+                  <div class="bar-label">Scrolling / Reels</div>
+                </div>
+                <div class="bar-item">
+                  <div class="bar" data-height="0.7"></div>
+                  <div class="bar-value">70%</div>
+                  <div class="bar-label">Missing someone</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meme segment -->
+        <div class="card fade-in-up delay-4">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">😂</span>
+              <span>Meme Segment: Manpreet Edition</span>
+            </div>
+            <div class="card-tag">Mood Booster</div>
+          </div>
+          <div class="card-body">
+            <div id="memeText" class="meme-text">
+              “Me: I will wake up early and study.  
+              Also me: sets 7 alarms and still wakes up like a confused potato.”
+            </div>
+            <button class="meme-btn" id="memeBtn">
+              <span>🎲</span>
+              <span>Show another headline</span>
+            </button>
+            <div style="margin-top:7px; font-size:0.7rem; color:var(--text-soft);">
+              This channel is biased. It always shows you as the main character, never the side character.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      End of this bulletin. Programming will now continue with normal life: chai, messages, and you being loved.  
+      <div style="margin-top:4px;">
+        Powered by <span>unofficial future husband energy</span>.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // VOICE / ANCHOR SECTION USING Web Speech API
+    (function () {
+      const voiceBtn = document.getElementById('voiceBtn');
+      const voiceStatus = document.getElementById('voiceStatus');
+      const bars = document.querySelectorAll('.bar');
+      const memeText = document.getElementById('memeText');
+      const memeBtn = document.getElementById('memeBtn');
+
+      const bulletinText =
+        "Good morning, Manpreet. This is Manpreet News Network with your top stories. " +
+        "Breaking news: you have successfully survived exams so far, and still manage to look cute while being tired. " +
+        "Weather department reports a high chance of naps, chai breaks, and sudden motivation at random hours. " +
+        "Education reporters confirm that your brain knows more than it admits, and last-minute revision will still work. " +
+        "In family news, Gurveer continues his duty as professional disturbance creator and secret fan of you. " +
+        "Health experts suggest at least one glass of milk, unlimited water, and a little self-love. " +
+        "In the relationship segment, our data shows someone out there is very proud of you, misses you a lot, and believes your future is going to be beautiful. " +
+        "This has been your morning bulletin. You may now continue being the main character of today.";
+
+      const memes = [
+        "Exam season update: Brain storage full. New information will be stored in the ‘panic later’ folder.",
+        "Current status: 1% studying, 99% staring at the same page thinking of random memories.",
+        "Today’s workout: running from responsibilities, jumping to conclusions, and lifting emotional baggage.",
+        "Sleep schedule leaked: 90% scrolling, 10% actual sleep, 100% complaining about being tired.",
+        "If overthinking was a degree, you would have graduated with a gold medal and a standing ovation.",
+        "Weather forecast: 80% chance of overthinking, 20% chance of ‘whatever happens, happens’.",
+        "Breaking news: camera roll now 70% selfies, 20% food, 10% real important stuff.",
+        "‘I’ll just check my phone for 5 minutes’ – famous last words of every productive plan.",
+        "Scientists discovered that every time you say ‘I’ll start from tomorrow’, tomorrow laughs quietly.",
+        "Official fact: you look more dangerous when you say ‘I’m fine’ than when you’re actually angry."
+      ];
+
+      let isSpeaking = false;
+      let synthSupported = 'speechSynthesis' in window;
+
+      function setVoiceStatus(text) {
+        if (voiceStatus) {
+          voiceStatus.lastChild && (voiceStatus.lastChild.textContent = " " + text);
+        }
+      }
+
+      function startSpeech() {
+        if (!synthSupported) {
+          setVoiceStatus("Your browser doesn’t support AI voice, but the text is still written for you.");
+          return;
+        }
+
+        const synth = window.speechSynthesis;
+
+        if (isSpeaking) {
+          synth.cancel();
+          isSpeaking = false;
+          voiceBtn.classList.remove('voice-active');
+          voiceBtn.innerHTML = '<span class="icon">🔊</span><span>Play AI news voice</span>';
+          setVoiceStatus("Voice stopped. Tap again to replay your bulletin.");
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(bulletinText);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.lang = 'en-IN'; // Indian English flavour
+
+        utterance.onstart = () => {
+          isSpeaking = true;
+          voiceBtn.classList.add('voice-active');
+          voiceBtn.innerHTML = '<span class="icon">⏹</span><span>Stop AI voice</span>';
+          setVoiceStatus("Reading your news… enjoy your personal bulletin.");
+        };
+
+        utterance.onend = () => {
+          isSpeaking = false;
+          voiceBtn.classList.remove('voice-active');
+          voiceBtn.innerHTML = '<span class="icon">🔊</span><span>Play AI news voice</span>';
+          setVoiceStatus("Finished. Tap again if you want to hear it one more time.");
+        };
+
+        synth.cancel();
+        synth.speak(utterance);
+      }
+
+      if (voiceBtn) {
+        voiceBtn.addEventListener('click', startSpeech);
+        if (!synthSupported) {
+          voiceBtn.disabled = true;
+          voiceBtn.style.opacity = 0.7;
+          voiceBtn.innerHTML = '<span class="icon">⚠️</span><span>Voice not supported</span>';
+          setVoiceStatus("Your device browser doesn’t support AI voice, but the headlines still love you.");
+        }
+      }
+
+      // Animate bars after small delay
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          bars.forEach(bar => {
+            const h = parseFloat(bar.getAttribute('data-height') || '0.2');
+            bar.style.transform = 'scaleY(' + Math.max(0.1, Math.min(h, 1.05)) + ')';
+          });
+        }, 500);
+      });
+
+      // Meme randomizer
+      if (memeBtn && memeText) {
+        memeBtn.addEventListener('click', () => {
+          const random = memes[Math.floor(Math.random() * memes.length)];
+          memeText.textContent = random;
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
